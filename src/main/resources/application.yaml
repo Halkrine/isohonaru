@@ -1,0 +1,88 @@
+spring:
+  devtools:
+    livereload:
+      enabled: true
+  datasource:
+    driver-class-name: "net.bitnine.agensgraph.Driver"
+    hikari:
+      driver-class-name: "net.bitnine.agensgraph.Driver"
+      auto-commit: true
+      connection-test-query: SELECT 1
+      minimum-idle: 10
+      maximum-pool-size: 80
+      connectionTimeout: 30000
+      maxLifetime: 1800000
+      poolName: HikariCP
+      readOnly: false
+  jpa:
+    database: postgresql
+    show-sql: true
+    open-in-view: true
+    hibernate:
+      ddl-auto: create
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8080
+  error:
+    include-exception: true
+    include-stacktrace: on_param
+    whitelabel:
+      enabled: true
+    path: /error
+agensgraph:
+  graph_path: graph_isohonaru
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  config-location: classpath:mybatis-config.xml
+logging:
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:Line %line] - %msg%n"
+  level:
+    org.springframework.web: DEBUG
+    net.bitnine: DEBUG
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: "jdbc:agensgraph://localhost:5432/isohonaru"
+    hikari:
+      jdbc-url: "jdbc:agensgraph://localhost:5432/isohonaru"
+      username: isohonaru
+      password: isohonaru
+  sql:
+   # init:
+   #   schema-locations: classpath:init.sql
+   #   mode: always
+---
+spring:
+  config:
+    activate:
+      on-profile: local_test
+  datasource:
+    url: "jdbc:agensgraph://localhost:5432/agens"
+    hikari:
+      jdbc-url: "jdbc:agensgraph://localhost:5432/agens"
+      username: agens
+      password: agens
+  sql:
+    init:
+      schema-locations: classpath:init_test.sql
+      mode: always
+agensgraph:
+  graph_path: gov_startup_test
+---
+############to be confirmed
+#spring:
+#  config:
+#    activate:
+#      on-profile: dev
+
+---
+###########to be confirmed
+#spring:
+#  config:
+#    activate:
+#      on-profile: prod
